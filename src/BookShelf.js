@@ -5,7 +5,12 @@ import sortBy from 'sort-by'
 
 class BookShelf extends Component {
   state = {
-    shelves:["Currently Reading", "Read", "Want to Read", "Lent", "Lost"],
+    shelves:[
+      {"id": 0, "name": "Currently Reading", "highLightShelf": false},
+      {"id": 1, "name": "Read", "highLightShelf": false},
+      {"id": 2, "name": "Want to Read", "highLightShelf": false},
+      {"id": 3, "name": "Lent", "highLightShelf": false},
+      {"id": 4, "name": "Lost", "highLightShelf": false}],
     books:[
       {
         "id": 1,
@@ -56,18 +61,46 @@ class BookShelf extends Component {
         "coverURL": "http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api",
         "shelf": "Currently Reading"
       }
-    ]
+    ],
+    selectedBooks:[]
   }
 
-  updateShelf = (book, newShelf) => {
-    for (let i = 0; i < this.state.books.length; i ++){
-      if (this.state.books[i].id === book.id){
-        this.state.books[i].shelf = newShelf
+  addRemoveSelectedBook(book) {
+    if (this.state.selectedBooks.includes(book)){
+      this.setState({selectedBooks: this.state.selectedBooks.filter((c) => c.id !== book.id)})
+    } else{
+      this.setState(state => ({
+        selectedBooks: state.selectedBooks.concat(book)
+      }))
+    }
+  }
+
+  updateShelf(newShelf){
+    for (let bookIndex = 0; bookIndex < this.state.books.length; bookIndex ++){
+      for (let selectedIndex = 0; selectedIndex < this.state.selectedBooks.length; selectedIndex ++){
+        if (this.state.selectedBooks[selectedIndex].id === this.state.books[bookIndex].id){
+          this.setState(state => ({
+            book: state.books[bookIndex].shelf = newShelf
+          }))
+        }
       }
     }
-    let books = this.state.books
-    this.setState({books})
+    this.setState(state => ({
+      selectedBooks: []
+    }))
+    this.clearShelves()
   }
+
+  clearShelves(){
+    let newShelves = this.state.shelves;
+    for (let i = 0; i < newShelves.length; i ++){
+      newShelves[i].highLightShelf = false
+    }
+    this.setState(state => ({
+      shelves: newShelves
+    }))
+  }
+
 
   keyTrim(stringToTrim){
     let newString = stringToTrim.replace(/\s+/g, '')
@@ -75,9 +108,11 @@ class BookShelf extends Component {
   }
 
   drag(ev, book) {
-      ev.target.style.cursor = 'grabbing'
-      ev.dataTransfer.effectAllowed = "move";
-      ev.dataTransfer.setData("text/plain",JSON.stringify(book));
+    ev.target.style.cursor = 'grabbing'
+    ev.dataTransfer.effectAllowed = "move"
+    if (!this.state.selectedBooks.includes(book)){
+      this.addRemoveSelectedBook(book)
+    }
   }
 
   dragEnd(ev) {
@@ -86,35 +121,53 @@ class BookShelf extends Component {
 
 
   drop(ev, newShelf) {
-      let data = ev.dataTransfer.getData("text/plain");
-      let movedBook = JSON.parse(data)
-      this.updateShelf(movedBook, newShelf)
+    this.updateShelf(newShelf)
   }
 
-  allowDrop(ev) {
+  allowDrop(ev, index) {
       ev.preventDefault()
+      let newShelves = this.state.shelves
+      newShelves[index].highLightShelf = true
+      this.setState(state => ({
+        shelves: newShelves
+      }))
+  }
+
+  leaveDrop(ev, index){
+    ev.preventDefault()
+    let newShelves = this.state.shelves
+    newShelves[index].highLightShelf = false
+    this.setState(state => ({
+      shelves: newShelves
+    }))
   }
 
   render(){
+    this.state.books.sort(sortBy('title'))
     return(
       this.state.shelves.map((thisShelf) => (
-      <div className="bookshelf" onDrop={(event) => this.drop(event, thisShelf)} onDragOver={(event) => this.allowDrop(event)}>
-        <h2 className="bookshelf-title">{thisShelf}</h2>
+      <div
+        className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf')}
+        onDrop={(event) => this.drop(event, thisShelf.name)}
+        onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
+        onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
+        <h2 className="bookshelf-title">{thisShelf.name}</h2>
         <div className="bookshelf-books">
-          <ol key={this.keyTrim(thisShelf)} className="books-grid">
+          <ol key={this.keyTrim(thisShelf.name)} className="books-grid">
             {this.state.books.map((book) => (
-            book.shelf === thisShelf &&
+            book.shelf === thisShelf.name &&
             <li key={this.keyTrim(book.title)}>
               <div className="book">
                 <div className="book-top">
-                  <Link to='/details'
-                    className="book-cover"
+                  <div
+                    onClick={(e) => this.addRemoveSelectedBook(book)}
+                    className={(this.state.selectedBooks.includes(book)? 'book-selected' : 'book-cover')}
                     draggable="true"
                     onDragStart={(event) => this.drag(event, book)}
                     onDragEnd={(event) => this.dragEnd(event)}
-                    style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></Link>
+                    style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></div>
                 </div>
-                  <div className="book-title">{book.title}</div>
+                  <Link to='/details' className="book-title">{book.title}</Link>
                   <div className="book-authors">{book.authors}</div>
               </div>
             </li>
@@ -125,6 +178,7 @@ class BookShelf extends Component {
           <Link to='/search'>Add a book</Link>
         </div>
       </div>
+
     ))
     )
   }

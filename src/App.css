@@ -30,6 +30,11 @@ body, .app {
   padding: 0 10px 20px;
 }
 
+.bookshelf-on-drag {
+  background: black;
+  padding: 0 10px 20px;
+}
+
 @media (min-width: 600px) {
   .bookshelf {
     padding: 0 20px 40px;
@@ -168,6 +173,14 @@ body, .app {
   background: #eee;
   cursor: pointer;
 }
+
+.book-selected {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background: #eee;
+  cursor: pointer;
+  background-blend-mode:soft-light;
+}
+
 .book-cover-title {
   padding: 20px 10px 0;
   text-align: center;
