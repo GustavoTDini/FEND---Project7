@@ -32,7 +32,6 @@ body, .app {
 
 .bookshelf-on-drag {
   background: black;
-  padding: 0 10px 20px;
 }
 
 @media (min-width: 600px) {
@@ -44,8 +43,14 @@ body, .app {
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
 }
+
 .bookshelf-books {
   text-align: center;
+}
+
+.bookshelf-on-drag {
+  text-align: center;
+  background: black;
 }
 
 .open-search {

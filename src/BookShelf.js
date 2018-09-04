@@ -6,11 +6,12 @@ import sortBy from 'sort-by'
 class BookShelf extends Component {
   state = {
     shelves:[
-      {"id": 0, "name": "Currently Reading", "highLightShelf": false},
-      {"id": 1, "name": "Read", "highLightShelf": false},
-      {"id": 2, "name": "Want to Read", "highLightShelf": false},
-      {"id": 3, "name": "Lent", "highLightShelf": false},
-      {"id": 4, "name": "Lost", "highLightShelf": false}],
+      {"id": 0, "name": "None", "highLightShelf": false},
+      {"id": 1, "name": "Currently Reading", "highLightShelf": false},
+      {"id": 2, "name": "Read", "highLightShelf": false},
+      {"id": 3, "name": "Want to Read", "highLightShelf": false},
+      {"id": 4, "name": "Lent", "highLightShelf": false},
+      {"id": 5, "name": "Lost", "highLightShelf": false}],
     books:[
       {
         "id": 1,
@@ -76,19 +77,21 @@ class BookShelf extends Component {
   }
 
   updateShelf(newShelf){
-    for (let bookIndex = 0; bookIndex < this.state.books.length; bookIndex ++){
-      for (let selectedIndex = 0; selectedIndex < this.state.selectedBooks.length; selectedIndex ++){
-        if (this.state.selectedBooks[selectedIndex].id === this.state.books[bookIndex].id){
-          this.setState(state => ({
-            book: state.books[bookIndex].shelf = newShelf
-          }))
+    if (newShelf !== 'None'){
+      for (let bookIndex = 0; bookIndex < this.state.books.length; bookIndex ++){
+        for (let selectedIndex = 0; selectedIndex < this.state.selectedBooks.length; selectedIndex ++){
+          if (this.state.selectedBooks[selectedIndex].id === this.state.books[bookIndex].id){
+            this.setState(state => ({
+              book: state.books[bookIndex].shelf = newShelf
+            }))
+          }
         }
       }
+      this.setState(state => ({
+        selectedBooks: []
+      }))
+      this.clearShelves()
     }
-    this.setState(state => ({
-      selectedBooks: []
-    }))
-    this.clearShelves()
   }
 
   clearShelves(){
@@ -99,12 +102,6 @@ class BookShelf extends Component {
     this.setState(state => ({
       shelves: newShelves
     }))
-  }
-
-
-  keyTrim(stringToTrim){
-    let newString = stringToTrim.replace(/\s+/g, '')
-    return newString
   }
 
   drag(ev, book) {
@@ -126,11 +123,13 @@ class BookShelf extends Component {
 
   allowDrop(ev, index) {
       ev.preventDefault()
-      let newShelves = this.state.shelves
-      newShelves[index].highLightShelf = true
-      this.setState(state => ({
-        shelves: newShelves
-      }))
+      if(index !== 0){
+        let newShelves = this.state.shelves
+        newShelves[index].highLightShelf = true
+        this.setState(state => ({
+          shelves: newShelves
+        }))
+      }
   }
 
   leaveDrop(ev, index){
@@ -147,16 +146,16 @@ class BookShelf extends Component {
     return(
       this.state.shelves.map((thisShelf) => (
       <div
-        className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf')}
+        className="bookshelf"
         onDrop={(event) => this.drop(event, thisShelf.name)}
         onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
         onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
         <h2 className="bookshelf-title">{thisShelf.name}</h2>
-        <div className="bookshelf-books">
-          <ol key={this.keyTrim(thisShelf.name)} className="books-grid">
+        <div className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf-books')}>
+          <ol key={thisShelf.id} className="books-grid">
             {this.state.books.map((book) => (
             book.shelf === thisShelf.name &&
-            <li key={this.keyTrim(book.title)}>
+            <li key={book.id}>
               <div className="book">
                 <div className="book-top">
                   <div
