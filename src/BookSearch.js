@@ -1,11 +1,29 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import bookCover from './images/placeholder-book-cover.png';
 
 class BookSearch extends Component {
   state = {
     query: '',
     searchedBooks: []
+  }
+
+  handleThumbnailError(book) {
+    if (book.hasOwnProperty('imageLinks')){
+      return book.imageLinks.thumbnail
+    } else {
+      return bookCover
+    }
+  }
+
+  handleAuthors(book) {
+    let authors = "No Authors Specified"
+    if(book.hasOwnProperty('authors')){
+      console.log(book.authors)
+      authors = book.authors.join(' / ')
+    }
+    return authors
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -47,10 +65,10 @@ class BookSearch extends Component {
           <li key={book.id}>
             <div className="book">
               <div className="book-top">
-                <div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.thumbnail}")`}}></div>
+                <div className='book-cover' style={{ width: 128, height: 193, backgroundImage:`url(${this.handleThumbnailError(book)})`}}></div>
               </div>
                 <Link to='/details' className="book-title">{book.title}</Link>
-                <div className="book-authors">{book.authors}</div>
+                <div className="book-authors">{this.handleAuthors(book)}</div>
             </div>
           </li>
         )}
