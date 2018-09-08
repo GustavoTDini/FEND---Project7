@@ -17,6 +17,7 @@ class BooksApp extends Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
+            <div className="title-margin"></div>
             <Route exact path='/' render={() => (
               <BookShelf/>
             )}/>

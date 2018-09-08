@@ -20,7 +20,6 @@ class BookSearch extends Component {
   handleAuthors(book) {
     let authors = "No Authors Specified"
     if(book.hasOwnProperty('authors')){
-      console.log(book.authors)
       authors = book.authors.join(' / ')
     }
     return authors
@@ -60,18 +59,16 @@ class BookSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
+          <ol className="books-search-grid">
           {showingBooks.map((book) =>
-          <li key={book.id}>
-            <div className="book">
-              <div className="book-top">
-                <div className='book-cover' style={{ width: 128, height: 193, backgroundImage:`url(${this.handleThumbnailError(book)})`}}></div>
-              </div>
-                <Link to='/details' className="book-title">{book.title}</Link>
+            <li key={book.id} className="book-list-search">
+              <div className="book">
+                <div className="book-title">{book.title}</div>
                 <div className="book-authors">{this.handleAuthors(book)}</div>
-            </div>
-          </li>
-        )}
+                <Link to='/details'><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${this.handleThumbnailError(book)})`}}></div></Link>
+              </div>
+            </li>
+          )}
           </ol>
         </div>
       </div>

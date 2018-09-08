@@ -1,22 +1,123 @@
+@import url('https://fonts.googleapis.com/css?family=Cinzel');
+
+/* *{
+    border: 1px solid red !important
+} */
+
 html, body, .root {
   height: 100%;
 }
-body {
-  line-height: 1.5;
-}
+
 body, .app {
-  background: white;
+  background-color: #9E9E9E;
+  background-image: url("https://www.transparenttextures.com/patterns/grunge-wall.png");
 }
 
-/* main page */
+/* shelf page */
+
+.bookshelf-title {
+  text-transform: uppercase;
+  margin-right: auto;
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 32px;
+  font-family: 'Cinzel', serif;
+  text-align: center;
+  padding: 0px 10px 0px 10px;
+  margin-top: 10px;
+  color: #8f6f17;
+  text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+  border: 5px solid #8f6f17;
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 5px 5px 12px -4px rgba(0,0,0,0.81);
+  background: linear-gradient(45deg, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 13%, rgba(251,223,147,1) 27%, rgba(248,181,0,1) 59%, rgba(251,223,147,1) 81%, rgba(248,181,0,1) 100%);
+}
+
+.bookshelf-title-encapsule{
+  display: flex;
+}
+
+.bookshelf-books {
+  text-align: center;
+}
+
+/* shelf */
+
+.shelves{
+  display: block;
+}
+
+
+.bookshelf-encapsule{
+  overflow-y: auto;
+  padding: 10px;
+  display: grid;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-right: 10px;
+}
+
+
+.bookshelf-encapsule-drag {
+  overflow-y: auto;
+  padding: 10px;
+  display: grid;
+  padding-left: 25px;
+  padding-right: 25px;
+  margin-right: 10px;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.5) 10%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.39) 50%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%);
+}
+
+.bookshelf-grid{
+  margin-right: 20px;
+  margin-left: 20px;
+  height: 250px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.shelf{
+  display: block;
+}
+
+.shelf-top{
+  background-color: #795548;
+  background-image: url("https://www.transparenttextures.com/patterns/retina-wood.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  width:97%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 35px;
+  z-index: -2;
+  -webkit-transform: perspective(350px) rotateX(30deg) translateY(2px);
+}
+
+.shelf-front {
+  margin-bottom: 25px;
+  position: relative;
+  bottom: 10;
+  height: 15px;
+  background-color: #3E2723;
+  background-image: url("https://www.transparenttextures.com/patterns/retina-wood.png");
+  background-blend-mode: hard-light;
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  box-shadow: 0px 8px 20px 4px rgba(0,0,0,0.9);
+}
 
 .list-books-title {
-  position: sticky;
+  z-index: 10;
+  position: fixed;
+  width: 100%;
   margin-top: 0px;
   padding: 10px 0;
   background: #2e7c31;
   text-align: center;
 }
+
+.title-margin{
+    height: 58px;
+}
+
 .list-books-title h1 {
   font-weight: 400;
   margin: 0;
@@ -42,10 +143,6 @@ body, .app {
   }
 }
 
-.bookshelf-title {
-  border-bottom: 1px solid #dedede;
-}
-
 .bookshelf-books {
   text-align: center;
 }
@@ -59,6 +156,7 @@ body, .app {
   position: fixed;
   right: 25px;
   bottom: 25px;
+  z-index: 5;
 }
 .open-search a {
   display: block;
@@ -97,6 +195,24 @@ body, .app {
   outline: none;
 }
 
+.books-search-grid {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.book-list-search {
+  margin-left: 25px;
+  margin-right: 25px;
+  margin-bottom: 30px;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
 .close-search {
   display: block;
   top: 20px;
@@ -118,74 +234,58 @@ body, .app {
 /* books grid */
 
 .books-grid {
+  overflow: auto;
+  height: 313px;
   list-style-type: none;
   padding: 0;
   margin: 0;
-
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
-.books-grid li {
-  padding: 10px 15px;
-  text-align: left;
+
+.book-list {
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+  position: relative;
+  bottom: -25px;
+  z-index: 1;
+  height: 100%;
 }
 
 .book {
   width: 140px;
+  display: inline-block;
+  align-self: flex-end;
 }
-.book-title,
-.book-authors {
-  font-size: 0.8em;
-}
+
 .book-title {
+  font-weight: bolder;
+  font-size: 15px;
+  font-family: 'Cinzel', serif;
+  text-align: center;
   margin-top: 10px;
 }
 .book-authors {
-  color: #999;
-}
-
-.book-top {
-  position: relative;
-  height: 200px;
-  display: flex;
-  align-items: flex-end;
-}
-
-.book-shelf-changer {
-  position: absolute;
-  right: 0;
-  bottom: -10px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #60ac5d;
-  background-image: url('./icons/arrow-drop-down.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-.book-shelf-changer select {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  margin-bottom: 12px;
+  font-size: 12px;
 }
 
 /* book cover */
 
 .book-cover {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
   background: #eee;
   cursor: pointer;
 }
 
 .book-selected {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
   background: #eee;
   cursor: pointer;
-  background-blend-mode:soft-light;
+  background-blend-mode:hard-light;
 }
 
 .book-cover-title {
@@ -211,4 +311,19 @@ body, .app {
   position: fixed;
   left:25px;
   bottom: 25px;
+}
+
+.book-shelf-changer {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #60ac5d;
+  background-image: url('./icons/info.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }

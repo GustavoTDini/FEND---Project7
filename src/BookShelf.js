@@ -18,49 +18,49 @@ class BookShelf extends Component {
         "title": "To Kill a Mockingbird",
         "authors": "Harper Lee",
         "coverURL": "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api",
-        "shelf": "Currently Reading"
+        "shelf": "None"
       },
       {
         "id": 2,
         "title": "Ender's Game",
         "authors": "Orson Scott Card",
         "coverURL": "http://books.google.com/books/content?id=yDtCuFHXbAYC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72RRiTR6U5OUg3IY_LpHTL2NztVWAuZYNFE8dUuC0VlYabeyegLzpAnDPeWxE6RHi0C2ehrR9Gv20LH2dtjpbcUcs8YnH5VCCAH0Y2ICaKOTvrZTCObQbsfp4UbDqQyGISCZfGN&source=gbs_api",
-        "shelf": "Want to Read"
+        "shelf": "None"
       },
       {
         "id": 3,
         "title": "1776",
         "authors": "David McCullough",
         "coverURL": "http://books.google.com/books/content?id=uu1mC6zWNTwC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73pGHfBNSsJG9Y8kRBpmLUft9O4BfItHioHolWNKOdLavw-SLcXADy3CPAfJ0_qMb18RmCa7Ds1cTdpM3dxAGJs8zfCfm8c6ggBIjzKT7XR5FIB53HHOhnsT7a0Cc-PpneWq9zX&source=gbs_api",
-        "shelf": "Want to Read"
+        "shelf": "None"
       },
       {
         "id": 4,
         "title": "Harry Potter and the Sorcerer's Stone",
         "authors": "J.K. Rowling",
         "coverURL": "http://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72G3gA5A-Ka8XjOZGDFLAoUeMQBqZ9y-LCspZ2dzJTugcOcJ4C7FP0tDA8s1h9f480ISXuvYhA_ZpdvRArUL-mZyD4WW7CHyEqHYq9D3kGnrZCNiqxSRhry8TiFDCMWP61ujflB&source=gbs_api",
-        "shelf": "Lent"
+        "shelf": "None"
       },
       {
         "id": 5,
         "title": "The Hobbit",
         "authors": "J.R.R. Tolkien",
         "coverURL": "http://books.google.com/books/content?id=pD6arNyKyi8C&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE70Rw0CCwNZh0SsYpQTkMbvz23npqWeUoJvVbi_gXla2m2ie_ReMWPl0xoU8Quy9fk0Zhb3szmwe8cTe4k7DAbfQ45FEzr9T7Lk0XhVpEPBvwUAztOBJ6Y0QPZylo4VbB7K5iRSk&source=gbs_api",
-        "shelf": "Read"
+        "shelf": "None"
       },
       {
         "id": 6,
         "title": "Oh, the Places You'll Go!",
         "authors": "Seuss",
         "coverURL": "http://books.google.com/books/content?id=1q_xAwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE712CA0cBYP8VKbEcIVEuFJRdX1k30rjLM29Y-dw_qU1urEZ2cQ42La3Jkw6KmzMmXIoLTr50SWTpw6VOGq1leINsnTdLc_S5a5sn9Hao2t5YT7Ax1RqtQDiPNHIyXP46Rrw3aL8&source=gbs_api",
-        "shelf": "Lost"
+        "shelf": "None"
       },
       {
         "id": 7,
         "title": "The Adventures of Tom Sawyer",
         "authors": "Mark Twain",
         "coverURL": "http://books.google.com/books/content?id=32haAAAAMAAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE72yckZ5f5bDFVIf7BGPbjA0KYYtlQ__nWB-hI_YZmZ-fScYwFy4O_fWOcPwf-pgv3pPQNJP_sT5J_xOUciD8WaKmevh1rUR-1jk7g1aCD_KeJaOpjVu0cm_11BBIUXdxbFkVMdi&source=gbs_api",
-        "shelf": "Currently Reading"
+        "shelf": "None"
       }
     ],
     selectedBooks:[]
@@ -145,42 +145,47 @@ class BookShelf extends Component {
     this.state.books.sort(sortBy('title'))
     return(
       this.state.shelves.map((thisShelf) => (
-      <div
-        className="bookshelf"
-        onDrop={(event) => this.drop(event, thisShelf.name)}
-        onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
-        onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
-        <h2 className="bookshelf-title">{thisShelf.name}</h2>
-        <div className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf-books')}>
-          <ol key={thisShelf.id} className="books-grid">
+        <ol key={thisShelf.id}
+            className="shelves"
+            onDrop={(event) => this.drop(event, thisShelf.name)}
+            onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
+            onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
+          <div className="bookshelf-title-encapsule">
+            <h2 className="bookshelf-title">{thisShelf.name}</h2>
+          </div>
+          <div className={(thisShelf.highLightShelf ? 'bookshelf-encapsule-drag': 'bookshelf-encapsule')}>
+          <div className="bookshelf-grid">
             {this.state.books.map((book) => (
             book.shelf === thisShelf.name &&
-            <li key={book.id}>
+            <li key={book.id} className="book-list">
               <div className="book">
-                <div className="book-top">
-                  <div
-                    onClick={(e) => this.addRemoveSelectedBook(book)}
-                    className={(this.state.selectedBooks.includes(book)? 'book-selected' : 'book-cover')}
-                    draggable="true"
-                    onDragStart={(event) => this.drag(event, book)}
-                    onDragEnd={(event) => this.dragEnd(event)}
-                    style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></div>
-                </div>
-                  <Link to='/details' className="book-title">{book.title}</Link>
-                  <div className="book-authors">{book.authors}</div>
+                <div className="book-title">{book.title}</div>
+                <div className="book-authors">{book.authors}</div>
+                <div
+                  onClick={(e) => this.addRemoveSelectedBook(book)}
+                  className={(this.state.selectedBooks.includes(book)? 'book-selected' : 'book-cover')}
+                  draggable="true"
+                  onDragStart={(event) => this.drag(event, book)}
+                  onDragEnd={(event) => this.dragEnd(event)}
+                  style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></div>
+                <Link to='/details' className="book-shelf-changer"></Link>
               </div>
             </li>
-          ))}
-          </ol>
-        </div>
-        <div className="open-search">
-          <Link to='/search'>Add a book</Link>
-        </div>
-      </div>
+            ))}
+            </div>
+            <div className="shelf">
+              <div className="shelf-top"></div>
+              <div className="shelf-front"></div>
+            </div>
+            </div>
+          <div className="open-search">
+            <Link to='/search'></Link>
+          </div>
+        </ol>
 
-    ))
+      ))
     )
-  }
+    }
 }
 
 export default BookShelf
