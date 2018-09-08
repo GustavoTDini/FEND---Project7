@@ -112,6 +112,12 @@ class BookShelf extends Component {
     }
   }
 
+  moveBooks(ev, newShelf) {
+    if (this.state.selectedBooks.length !== 0){
+      this.updateShelf(newShelf)
+    }
+  }
+
   dragEnd(ev) {
     ev.target.style.cursor = 'pointer'
   }
@@ -146,11 +152,13 @@ class BookShelf extends Component {
     return(
       this.state.shelves.map((thisShelf) => (
         <ol key={thisShelf.id}
-            className="shelves"
+            className='shelves'
             onDrop={(event) => this.drop(event, thisShelf.name)}
             onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
             onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
-          <div className="bookshelf-title-encapsule">
+          <div
+            className={(this.state.selectedBooks.length !== 0 ? 'bookshelf-title-encapsule-move': 'bookshelf-title-encapsule')}
+            onClick={(event) => this.moveBooks(event, thisShelf.name)}>
             <h2 className="bookshelf-title">{thisShelf.name}</h2>
           </div>
           <div className={(thisShelf.highLightShelf ? 'bookshelf-encapsule-drag': 'bookshelf-encapsule')}>
@@ -168,7 +176,7 @@ class BookShelf extends Component {
                   onDragStart={(event) => this.drag(event, book)}
                   onDragEnd={(event) => this.dragEnd(event)}
                   style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></div>
-                <Link to='/details' className="book-shelf-changer"></Link>
+                <Link to='/details' className="book-shelf-info"></Link>
               </div>
             </li>
             ))}

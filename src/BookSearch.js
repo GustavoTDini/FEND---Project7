@@ -66,6 +66,7 @@ class BookSearch extends Component {
                 <div className="book-title">{book.title}</div>
                 <div className="book-authors">{this.handleAuthors(book)}</div>
                 <Link to='/details'><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${this.handleThumbnailError(book)})`}}></div></Link>
+                <div className="book-shelf-add"></div>
               </div>
             </li>
           )}

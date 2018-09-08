@@ -37,6 +37,11 @@ body, .app {
   display: flex;
 }
 
+.bookshelf-title-encapsule-move{
+  display: flex;
+  cursor: copy;
+}
+
 .bookshelf-books {
   text-align: center;
 }
@@ -46,7 +51,6 @@ body, .app {
 .shelves{
   display: block;
 }
-
 
 .bookshelf-encapsule{
   overflow-y: auto;
@@ -68,9 +72,11 @@ body, .app {
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.5) 10%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.39) 50%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%);
 }
 
+
+
 .bookshelf-grid{
-  margin-right: 20px;
-  margin-left: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
   height: 250px;
   display: flex;
   justify-content: space-evenly;
@@ -78,6 +84,8 @@ body, .app {
 
 .shelf{
   display: block;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .shelf-top{
@@ -312,7 +320,7 @@ body, .app {
   bottom: 25px;
 }
 
-.book-shelf-changer {
+.book-shelf-info {
   position: absolute;
   right: 0;
   bottom: -10px;
@@ -324,5 +332,21 @@ body, .app {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.book-shelf-add {
+  position: absolute;
+  right: 0;
+  bottom: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #60ac5d;
+  background-image: url('./icons/add.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  cursor: pointer;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
