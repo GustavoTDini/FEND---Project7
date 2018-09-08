@@ -10,7 +10,7 @@ html, body, .root {
 
 body, .app {
   background-color: #9E9E9E;
-  background-image: url("https://www.transparenttextures.com/patterns/grunge-wall.png");
+  background-image: url("./images/grunge-wall.png");
 }
 
 /* shelf page */
@@ -82,8 +82,7 @@ body, .app {
 
 .shelf-top{
   background-color: #795548;
-  background-image: url("https://www.transparenttextures.com/patterns/retina-wood.png");
-  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  background-image: url("./images/retina-wood.png");
   width:97%;
   margin-left: auto;
   margin-right: auto;
@@ -98,7 +97,7 @@ body, .app {
   bottom: 10;
   height: 15px;
   background-color: #3E2723;
-  background-image: url("https://www.transparenttextures.com/patterns/retina-wood.png");
+  background-image: url("./images/retina-wood.png");
   background-blend-mode: hard-light;
   /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   box-shadow: 0px 8px 20px 4px rgba(0,0,0,0.9);
