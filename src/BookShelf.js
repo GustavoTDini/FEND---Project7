@@ -145,40 +145,40 @@ class BookShelf extends Component {
     this.state.books.sort(sortBy('title'))
     return(
       this.state.shelves.map((thisShelf) => (
-      <div
-        className="bookshelf"
-        onDrop={(event) => this.drop(event, thisShelf.name)}
-        onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
-        onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
-        <h2 className="bookshelf-title">{thisShelf.name}</h2>
-        <div className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf-books')}>
-          <ol key={thisShelf.id} className="books-grid">
+        <ol key={thisShelf.id} className="shelves">
+          <div className="bookshelf-title-encapsule">
+            <h2 className="bookshelf-title">thisShelf.name</h2>
+          </div>
+          <div className={(thisShelf.highLightShelf? 'bookshelf-on-drag' : 'bookshelf-books')}
+            onDrop={(event) => this.drop(event, thisShelf.name)}
+            onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
+            onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
             {this.state.books.map((book) => (
-            book.shelf === thisShelf.name &&
-            <li key={book.id}>
+              book.shelf === thisShelf.name &&
+            <li key={book.id} className="book-list">
               <div className="book">
-                <div className="book-top">
-                  <div
-                    onClick={(e) => this.addRemoveSelectedBook(book)}
-                    className={(this.state.selectedBooks.includes(book)? 'book-selected' : 'book-cover')}
-                    draggable="true"
-                    onDragStart={(event) => this.drag(event, book)}
-                    onDragEnd={(event) => this.dragEnd(event)}
-                    style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}></div>
-                </div>
-                  <Link to='/details' className="book-title">{book.title}</Link>
-                  <div className="book-authors">{book.authors}</div>
+                <Link to='/details' className="book-title">{book.title}></Link>
+                <div className="book-authors">{book.authors}></div>
+                <div
+                  onClick={(e) => this.addRemoveSelectedBook(book)}
+                  className={(this.state.selectedBooks.includes(book)? 'book-selected' : 'book-cover')}
+                  draggable="true"
+                  onDragStart={(event) => this.drag(event, book)}
+                  onDragEnd={(event) => this.dragEnd(event)}
+                  style={{ width: 128, height: 193, backgroundImage: `url("${book.coverURL}")`}}/>
               </div>
             </li>
-          ))}
+            ))}
+            </div>
+          <div className="shelf">
+            <div className="shelf-top"></div>
+            <div className="shelf-front"></div>
+          </div>
           </ol>
-        </div>
+        )),
         <div className="open-search">
           <Link to='/search'>Add a book</Link>
         </div>
-      </div>
-
-    ))
     )
   }
 }
