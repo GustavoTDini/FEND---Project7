@@ -1,28 +1,17 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import bookCover from './images/placeholder-book-cover.png';
+import * as BookHelper from './BookHelper'
+import PropTypes from 'prop-types'
 
 class BookSearch extends Component {
+  static propTypes = {
+    books: PropTypes.array.isRequired
+  }
+
   state = {
     query: '',
     searchedBooks: []
-  }
-
-  handleThumbnailError(book) {
-    if (book.hasOwnProperty('imageLinks')){
-      return book.imageLinks.thumbnail
-    } else {
-      return bookCover
-    }
-  }
-
-  handleAuthors(book) {
-    let authors = "No Authors Specified"
-    if(book.hasOwnProperty('authors')){
-      authors = book.authors.join(' / ')
-    }
-    return authors
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -34,6 +23,14 @@ class BookSearch extends Component {
 
   updateQuery = (query) => {
     this.setState({ query: query })
+  }
+
+  addBook = (book) => {
+    BooksAPI.update(book, "currentlyReading").then(data => {
+      this.setState(state => ({
+        books: this.props.books.concat(data)
+      }))
+    })
   }
 
   render() {
@@ -64,9 +61,20 @@ class BookSearch extends Component {
             <li key={book.id} className="book-list-search">
               <div className="book">
                 <div className="book-title">{book.title}</div>
-                <div className="book-authors">{this.handleAuthors(book)}</div>
-                <Link to='/details'><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${this.handleThumbnailError(book)})`}}></div></Link>
-                <div className="book-shelf-add"></div>
+                <div className="book-authors">{BookHelper.handleAuthors(book)}</div>
+                <Link to={{
+                  pathname: `/details/:${book.id}`,
+                  state: { currentBook: book }
+                }}><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div></Link>
+                <Link to="/" onClick={() => this.addBook(book)}>
+                  <div className="book-shelf-add" ></div></Link>
+                  <select
+                    className="search-boo">
+                    <option value="Currently Reading">Currently Reading</option>
+                    <option value="Currently Reading">Currently Reading</option>
+                    <option value="Read">Read</option>
+                    <option value="Want to Read">Want to Read</option>
+                  </select>
               </div>
             </li>
           )}

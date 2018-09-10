@@ -4,23 +4,25 @@ import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 import BookSearch from './BookSearch'
 import BookDetails from './BookDetails'
-import PropTypes from 'prop-types'
+
 import './App.css'
 
 class BooksApp extends Component {
-  static propTypes = {
-    book: PropTypes.object.isRequired,
-  }
-
-
   state = {
-    currentBook:{}
+    books:[]
   }
 
-  componentDidUpdate(prevProps, prevState){
-    console.log("update");
-    if (this.state.currentBook !== prevState.currentBook){
-      this.setState({currentBook:this.props.book})
+  componentDidMount() {
+    BooksAPI.getAll().then((fetchBooks) => {
+      this.setState({books: fetchBooks})
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.books !== prevState.books){
+      BooksAPI.getAll().then((fetchBooks) => {
+        this.setState({books: fetchBooks})
+      })
     }
   }
 
@@ -32,16 +34,16 @@ class BooksApp extends Component {
               <h1>MyReads</h1>
             </div>
             <div className="title-margin"></div>
-            <Route exact path='/' render={() => (
-              <BookShelf/>
+            <Route exact path='/' render={(props) => (
+              <BookShelf {...props} books={this.state.books}/>
             )}/>
-            <Route path='/search' render={() => (
-              <BookSearch/>
+            <Route path='/search' render={(props) => (
+              <BookSearch {...props} books={this.state.books}/>
             )}/>
-            <Route path='/details' render={() => (
-              <BookDetails
-                book={this.currentBook}
-              />
+            <Route
+            path='/details'
+            render={(props) => (
+              <BookDetails {...props} book={props}/>
             )}/>
           </div>
       </div>
