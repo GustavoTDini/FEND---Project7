@@ -28,7 +28,7 @@ class BookShelf extends Component {
         "id": "wantToRead",
         "name": "Want to Read",
         "highLightShelf": false
-      },
+      }
     ],
     selectedBooks:[],
     books:[]
@@ -41,7 +41,6 @@ class BookShelf extends Component {
         books: fetchBooks
       }))
     })
-    BooksAPI.update().then((data) => console.log(data))
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -65,21 +64,18 @@ class BookShelf extends Component {
       for (let bookIndex = 0; bookIndex < books.length; bookIndex ++){
         for (let selectedIndex = 0; selectedIndex < selectedBooks.length; selectedIndex ++){
           if (selectedBooks[selectedIndex].id === books[bookIndex].id){
-            BooksAPI.update(books, newShelf).then((data) => {
-              console.log(data)
-              this.setState(state => ({ books: books[bookIndex].shelf = newShelf })
-              )
-              console.log(books)
-          })
+            BooksAPI.update(books[bookIndex], newShelf)
+            let updatedBooks = books
+            updatedBooks[bookIndex].shelf = newShelf
+            this.setState(state => ({ books: updatedBooks }))
+
+          }
           }
         }
       }
-      this.setState(state => ({
-        selectedBooks: []
-      }))
+      this.setState(state => ({selectedBooks: []}))
       this.clearShelves()
     }
-  }
 
   clearShelves(){
     let newShelves = this.state.shelves;
@@ -115,13 +111,13 @@ class BookShelf extends Component {
 
   allowDrop(ev, index) {
       ev.preventDefault()
-      if(index !== 0){
         let newShelves = this.state.shelves
         newShelves[index].highLightShelf = true
+        console.log(newShelves)
         this.setState(state => ({
           shelves: newShelves
         }))
-      }
+        console.log(this.state.shelves)
   }
 
   leaveDrop(ev, index){
