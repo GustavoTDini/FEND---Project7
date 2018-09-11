@@ -12,12 +12,14 @@ class BookSearch extends Component {
   state = {
     query: '',
     searchedBooks: []
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.query !== prevState.query){
       BooksAPI.search(this.state.query).then(data => {
-      this.setState({searchedBooks: data})})
+        this.setState({searchedBooks: data})
+      })
     }
   }
 
@@ -25,8 +27,9 @@ class BookSearch extends Component {
     this.setState({ query: query })
   }
 
-  addBook = (book) => {
+  addBook = (book, ) => {
     BooksAPI.update(book, "currentlyReading").then(data => {
+      console.log(data)
       this.setState(state => ({
         books: this.props.books.concat(data)
       }))

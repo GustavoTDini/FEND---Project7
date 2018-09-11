@@ -1,30 +1,11 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
-import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 import BookSearch from './BookSearch'
 import BookDetails from './BookDetails'
-
 import './App.css'
 
 class BooksApp extends Component {
-  state = {
-    books:[]
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((fetchBooks) => {
-      this.setState({books: fetchBooks})
-    })
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.books !== prevState.books){
-      BooksAPI.getAll().then((fetchBooks) => {
-        this.setState({books: fetchBooks})
-      })
-    }
-  }
 
   render() {
     return (
@@ -35,10 +16,10 @@ class BooksApp extends Component {
             </div>
             <div className="title-margin"></div>
             <Route exact path='/' render={(props) => (
-              <BookShelf {...props} books={this.state.books}/>
+              <BookShelf />
             )}/>
             <Route path='/search' render={(props) => (
-              <BookSearch {...props} books={this.state.books}/>
+              <BookSearch />
             )}/>
             <Route
             path='/details'

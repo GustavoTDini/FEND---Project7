@@ -9,12 +9,23 @@ class BookDetails extends Component {
     currentBook: PropTypes.object.isRequired,
   }
 
+  shouldComponentUpdate(nextProps) {
+   return this.props.currentBook !== nextProps.currentBook;
+  }
+
   changeShelf(book, newShelf){
     BooksAPI.update()
   }
 
+  getBook(book){
+    BooksAPI.get(book.id).then((data) => {
+      console.log(data)
+    })
+  }
+
   render() {
     let {currentBook} = this.props.location.state
+    console.log("render")
 
     return (
     <div>

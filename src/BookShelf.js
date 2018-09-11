@@ -2,28 +2,50 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import sortBy from 'sort-by'
-import PropTypes from 'prop-types'
 import * as BookHelper from './BookHelper'
 
-
 class BookShelf extends Component {
-  static propTypes = {
-    books: PropTypes.array.isRequired
-  }
+  // static propTypes = {
+  //   books: PropTypes.array.isRequired
+  // }
 
   state = {
     shelves:[
-      {"id": 0, "name": "Currently Reading", "highLightShelf": false},
-      {"id": 1, "name": "Read", "highLightShelf": false},
-      {"id": 2, "name": "Want to Read", "highLightShelf": false},
+      {
+        "index": 0,
+        "id": "currentlyReading",
+        "name": "Currently Reading",
+        "highLightShelf": false
+      },
+      {
+        "index": 1,
+        "id": "read",
+        "name": "Read",
+        "highLightShelf": false
+      },
+      {
+        "index": 2,
+        "id": "wantToRead",
+        "name": "Want to Read",
+        "highLightShelf": false
+      },
     ],
-    selectedBooks:[]
+    selectedBooks:[],
+    books:[]
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((fetchBooks) => {
-      this.setState({books: fetchBooks})
+      console.log(fetchBooks)
+      this.setState(state => ({
+        books: fetchBooks
+      }))
     })
+    BooksAPI.update().then((data) => console.log(data))
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+   return this.state.books !== nextState.books || this.state.selectedBooks !== nextState.selectedBooks;
   }
 
   addRemoveSelectedBook(book) {
@@ -37,13 +59,18 @@ class BookShelf extends Component {
   }
 
   updateShelf(newShelf){
+    const { books, selectedBooks } = this.state
+
     if (newShelf !== 'None'){
-      for (let bookIndex = 0; bookIndex < this.props.books.length; bookIndex ++){
-        for (let selectedIndex = 0; selectedIndex < this.state.selectedBooks.length; selectedIndex ++){
-          if (this.state.selectedBooks[selectedIndex].id === this.props.books[bookIndex].id){
-            this.setState(state => ({
-              book: this.props.books[bookIndex].shelf = newShelf
-            }))
+      for (let bookIndex = 0; bookIndex < books.length; bookIndex ++){
+        for (let selectedIndex = 0; selectedIndex < selectedBooks.length; selectedIndex ++){
+          if (selectedBooks[selectedIndex].id === books[bookIndex].id){
+            BooksAPI.update(books, newShelf).then((data) => {
+              console.log(data)
+              this.setState(state => ({ books: books[bookIndex].shelf = newShelf })
+              )
+              console.log(books)
+          })
           }
         }
       }
@@ -82,7 +109,6 @@ class BookShelf extends Component {
     ev.target.style.cursor = 'pointer'
   }
 
-
   drop(ev, newShelf) {
     this.updateShelf(newShelf)
   }
@@ -108,8 +134,7 @@ class BookShelf extends Component {
   }
 
   render(){
-    const { books } = this.props
-    const { shelves } = this.state
+    const { books, shelves } = this.state
 
     books.sort(sortBy('title'))
 
@@ -117,18 +142,18 @@ class BookShelf extends Component {
       shelves.map((thisShelf) =>
         <ol key={thisShelf.id}
             className='shelves'
-            onDrop={(event) => this.drop(event, thisShelf.name)}
-            onDragOver={(event) => this.allowDrop(event, thisShelf.id)}
-            onDragLeave={(event) => this.leaveDrop(event, thisShelf.id)}>
+            onDrop={(event) => this.drop(event, thisShelf.id)}
+            onDragOver={(event) => this.allowDrop(event, thisShelf.index)}
+            onDragLeave={(event) => this.leaveDrop(event, thisShelf.index)}>
           <div
             className={(this.state.selectedBooks.length !== 0 && thisShelf.id !== 0? 'bookshelf-title-encapsule-move': 'bookshelf-title-encapsule')}
-            onClick={(event) => this.moveBooks(event, thisShelf.name)}>
+            onClick={(event) => this.moveBooks(event, thisShelf.id)}>
             <h2 className="bookshelf-title">{thisShelf.name}</h2>
           </div>
           <div className={(thisShelf.highLightShelf ? 'bookshelf-encapsule-drag': 'bookshelf-encapsule')}>
           <div className="bookshelf-grid">
             {books.map((thisBook) => (
-            thisBook.shelf === thisShelf.name &&
+            thisBook.shelf === thisShelf.id &&
             <li key={thisBook.id} className="book-list">
               <div className="book">
                 <div className="book-title">{thisBook.title}</div>
