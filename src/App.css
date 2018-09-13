@@ -50,7 +50,8 @@ body, .app {
 
 .shelves{
   display: block;
-  -webkit-padding-end: 40px;
+  -webkit-padding-end: 0px;
+  -webkit-padding-start: 0px;
 }
 
 .bookshelf-encapsule{
@@ -59,7 +60,8 @@ body, .app {
   display: grid;
   padding-left: 25px;
   padding-right: 25px;
-  margin-right: 10px;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 
@@ -69,8 +71,8 @@ body, .app {
   display: grid;
   padding-left: 25px;
   padding-right: 25px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: 0px;
+  margin-left: 0px;
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.5) 10%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.39) 50%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%);
 }
 
@@ -449,6 +451,40 @@ body, .app {
   bottom: 25px;
 }
 
+.details-add-book {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #2e7d32;
+  background-image: url('./icons/add.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  font-size: 0;
+  position: fixed;
+  right:25px;
+  bottom: 25px;
+}
+
+.details-delete-book {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e60000;
+  background-image: url('./icons/arrow-back-white.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 28px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  font-size: 0;
+  position: fixed;
+  right:25px;
+  bottom: 25px;
+}
+
 .book-shelf-info {
   position: absolute;
   right: 0;
@@ -464,7 +500,7 @@ body, .app {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.book-shelf-add {
+.book-search-add {
   position: absolute;
   right: 0;
   bottom: -10px;

@@ -3,29 +3,47 @@ import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import * as BookHelper from './BookHelper'
 import PropTypes from 'prop-types'
+import Select from 'react-select'
 
 class BookDetails extends Component {
-  props = {
-    currentBook: PropTypes.object.isRequired,
+  static propTypes = {
+    currentBookId: PropTypes.string.isRequired,
+    linkFrom: PropTypes.string.isRequired
   }
 
-  shouldComponentUpdate(nextProps) {
-   return this.props.currentBook !== nextProps.currentBook;
+  state = {
+    currentBook:{},
+    selectedShelf:null
   }
 
-  changeShelf(book, newShelf){
-    BooksAPI.update()
-  }
-
-  getBook(book){
-    BooksAPI.get(book.id).then((data) => {
-      console.log(data)
+  componentDidMount() {
+    const {currentBookId} = this.props.location.state
+    BooksAPI.get(currentBookId).then((fetchBook) => {
+      let shelf = fetchBook.shelf
+      this.setState(state => ({
+        currentBook: fetchBook,
+        selectedShelf: shelf
+      }))
     })
   }
 
+
+  changeShelf = (selectedShelf) => {
+    this.setState({selectedShelf})
+  }
+
   render() {
-    let {currentBook} = this.props.location.state
-    console.log("render")
+    const {linkFrom} = this.props.location.state
+    const {currentBook, selectedShelf} = this.state
+
+    console.log(linkFrom)
+
+    const selectShelves = [
+      { value: 'none', label: 'None' },
+      { value: 'currentlyReading', label: 'Currently Reading' },
+      { value: 'Read', label: 'Read' },
+      { value: 'wantToRead', label: 'Want to Read' }
+    ];
 
     return (
     <div>
@@ -47,19 +65,16 @@ class BookDetails extends Component {
             <p className="book-data-name">Pages</p>
             <p className="book-data">{currentBook.pageCount}</p>
             <p className="book-data-name">Shelf</p>
-              <select
-                className="book-data">
-                <option value="Currently Reading">Currently Reading</option>
-                <option value="Read">Read</option>
-                <option value="Want to Read">Want to Read</option>
-              </select>
+              <Select
+                value={selectedShelf}
+                onChange={this.changeShelf}
+                options={selectShelves}
+                />
             </div>
           </div>
         </div>
       </div>
-      <div className="details-return">
-        <Link to='/'>Return</Link>
-      </div>
+      <BookHelper.BookDetailsFooter shelfOrSearch={linkFrom}/>
     </div>
     )
   }

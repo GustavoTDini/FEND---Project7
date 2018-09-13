@@ -5,9 +5,6 @@ import sortBy from 'sort-by'
 import * as BookHelper from './BookHelper'
 
 class BookShelf extends Component {
-  // static propTypes = {
-  //   books: PropTypes.array.isRequired
-  // }
 
   state = {
     shelves:[
@@ -44,7 +41,7 @@ class BookShelf extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-   return this.state.books !== nextState.books || this.state.selectedBooks !== nextState.selectedBooks;
+   return this.state !== nextState;
   }
 
   addRemoveSelectedBook(book) {
@@ -60,22 +57,16 @@ class BookShelf extends Component {
   updateShelf(newShelf){
     const { books, selectedBooks } = this.state
 
-    if (newShelf !== 'None'){
-      for (let bookIndex = 0; bookIndex < books.length; bookIndex ++){
-        for (let selectedIndex = 0; selectedIndex < selectedBooks.length; selectedIndex ++){
-          if (selectedBooks[selectedIndex].id === books[bookIndex].id){
-            BooksAPI.update(books[bookIndex], newShelf)
-            let updatedBooks = books
-            updatedBooks[bookIndex].shelf = newShelf
-            this.setState(state => ({ books: updatedBooks }))
-
-          }
-          }
-        }
-      }
-      this.setState(state => ({selectedBooks: []}))
-      this.clearShelves()
+    for (let index = 0; index < selectedBooks.length; index ++){
+      BooksAPI.update(selectedBooks[index], newShelf)
+      let updatedBooks = books
+      let updatedBookIndex = updatedBooks.indexOf(selectedBooks[index])
+      updatedBooks[updatedBookIndex].shelf = newShelf
+      this.setState(state => ({ books: updatedBooks }))
     }
+    this.setState(state => ({selectedBooks: []}))
+    this.clearShelves()
+  }
 
   clearShelves(){
     let newShelves = this.state.shelves;
@@ -163,7 +154,7 @@ class BookShelf extends Component {
                   style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(thisBook)})`}}></div>
                   <Link to={{
                     pathname: `/details/:${thisBook.id}`,
-                    state: { currentBook: thisBook }
+                    state: { currentBookId: thisBook.id , linkFrom: "bookShelf"}
                   }} className="book-shelf-info"/>
               </div>
             </li>

@@ -2,17 +2,12 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import * as BookHelper from './BookHelper'
-import PropTypes from 'prop-types'
 
 class BookSearch extends Component {
-  static propTypes = {
-    books: PropTypes.array.isRequired
-  }
 
   state = {
     query: '',
     searchedBooks: []
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -27,7 +22,7 @@ class BookSearch extends Component {
     this.setState({ query: query })
   }
 
-  addBook = (book, ) => {
+  addBook = (book) => {
     BooksAPI.update(book, "currentlyReading").then(data => {
       console.log(data)
       this.setState(state => ({
@@ -67,12 +62,12 @@ class BookSearch extends Component {
                 <div className="book-authors">{BookHelper.handleAuthors(book)}</div>
                 <Link to={{
                   pathname: `/details/:${book.id}`,
-                  state: { currentBook: book }
+                  state: { currentBookId: book.id , linkFrom: "bookSearch"}
                 }}><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div></Link>
                 <Link to="/" onClick={() => this.addBook(book)}>
-                  <div className="book-shelf-add" ></div></Link>
+                  <div className="book-search-add" ></div></Link>
                   <select
-                    className="search-boo">
+                    className="search-book">
                     <option value="Currently Reading">Currently Reading</option>
                     <option value="Currently Reading">Currently Reading</option>
                     <option value="Read">Read</option>

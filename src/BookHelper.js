@@ -1,3 +1,6 @@
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import bookCover from './images/placeholder-book-cover.png';
 
 
@@ -16,6 +19,42 @@ export function handleAuthors(book){
   }
   return authors
 }
+
+export class BookDetailsFooter extends Component {
+  static propTypes = {
+    shelfOrSearch: PropTypes.string.isRequired,
+  }
+
+  render() {
+    const {shelfOrSearch} = this.props
+
+    if (shelfOrSearch === "bookShelf"){
+      return(
+        <div>
+          <div className="details-return">
+            <Link to='/'></Link>
+          </div>
+          <div className="details-delete-book">
+            <Link to='/'></Link>
+          </div>
+        </div>
+      )
+    } else if (shelfOrSearch === "bookSearch") {
+      return(
+        <div>
+          <div className="details-return">
+            <Link to='/search'></Link>
+          </div>
+          <div className="details-add-book">
+            <Link to='/'></Link>
+          </div>
+        </div>
+      )
+    }
+  }
+}
+
+
 
 // {
 //   "id": 1,
