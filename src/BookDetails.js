@@ -4,6 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import * as BookHelper from './BookHelper'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
+import Book from './Book'
 
 class BookDetails extends Component {
   static propTypes = {
@@ -35,8 +36,7 @@ class BookDetails extends Component {
   render() {
     const {linkFrom} = this.props.location.state
     const {currentBook, selectedShelf} = this.state
-
-    console.log(linkFrom)
+    console.log(selectedShelf)
 
     const selectShelves = [
       { value: 'none', label: 'None' },
@@ -74,9 +74,43 @@ class BookDetails extends Component {
           </div>
         </div>
       </div>
-      <BookHelper.BookDetailsFooter shelfOrSearch={linkFrom}/>
+      <BookDetailsFooter shelfOrSearch={linkFrom}/>
     </div>
     )
+  }
+}
+
+class BookDetailsFooter extends Component {
+  static propTypes = {
+    shelfOrSearch: PropTypes.string.isRequired,
+  }
+
+  render() {
+    const {shelfOrSearch} = this.props
+
+    if (shelfOrSearch === "bookShelf"){
+      return(
+        <div>
+          <div className="details-return">
+            <Link to='/'></Link>
+          </div>
+          <div className="details-delete-book">
+            <Link to='/'></Link>
+          </div>
+        </div>
+      )
+    } else if (shelfOrSearch === "bookSearch") {
+      return(
+        <div>
+          <div className="details-return">
+            <Link to='/search'></Link>
+          </div>
+          <div className="details-add-book">
+            <Link to='/'></Link>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

@@ -474,7 +474,7 @@ body, .app {
   height: 50px;
   border-radius: 50%;
   background: #e60000;
-  background-image: url('./icons/arrow-back-white.svg');
+  background-image: url('./icons/delete.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 28px;

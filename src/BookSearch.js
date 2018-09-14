@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import * as BookHelper from './BookHelper'
+import Book from './Book'
 
 class BookSearch extends Component {
 
@@ -57,23 +58,7 @@ class BookSearch extends Component {
           <ol className="books-search-grid">
           {showingBooks.map((book) =>
             <li key={book.id} className="book-list-search">
-              <div className="book">
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">{BookHelper.handleAuthors(book)}</div>
-                <Link to={{
-                  pathname: `/details/:${book.id}`,
-                  state: { currentBookId: book.id , linkFrom: "bookSearch"}
-                }}><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div></Link>
-                <Link to="/" onClick={() => this.addBook(book)}>
-                  <div className="book-search-add" ></div></Link>
-                  <select
-                    className="search-book">
-                    <option value="Currently Reading">Currently Reading</option>
-                    <option value="Currently Reading">Currently Reading</option>
-                    <option value="Read">Read</option>
-                    <option value="Want to Read">Want to Read</option>
-                  </select>
-              </div>
+              <Book book={book}/>
             </li>
           )}
           </ol>

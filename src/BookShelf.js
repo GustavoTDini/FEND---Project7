@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import sortBy from 'sort-by'
 import * as BookHelper from './BookHelper'
+import Book from './Book'
 
 class BookShelf extends Component {
 
@@ -44,12 +45,13 @@ class BookShelf extends Component {
    return this.state !== nextState;
   }
 
-  addRemoveSelectedBook(book) {
-    if (this.state.selectedBooks.includes(book)){
-      this.setState({selectedBooks: this.state.selectedBooks.filter((c) => c.id !== book.id)})
+  addRemoveSelectedBook(ev, book, selectedBook) {
+    (ev).preventDefault()
+    if (selectedBook.includes(book)){
+      this.setState({selectedBooks: selectedBook.filter((c) => c.id !== book.id)})
     } else{
       this.setState(state => ({
-        selectedBooks: state.selectedBooks.concat(book)
+        selectedBooks: selectedBook.concat(book)
       }))
     }
   }
@@ -104,11 +106,9 @@ class BookShelf extends Component {
       ev.preventDefault()
         let newShelves = this.state.shelves
         newShelves[index].highLightShelf = true
-        console.log(newShelves)
         this.setState(state => ({
           shelves: newShelves
         }))
-        console.log(this.state.shelves)
   }
 
   leaveDrop(ev, index){
@@ -121,7 +121,7 @@ class BookShelf extends Component {
   }
 
   render(){
-    const { books, shelves } = this.state
+    const { books, shelves , selectedBooks} = this.state
 
     books.sort(sortBy('title'))
 
@@ -142,21 +142,10 @@ class BookShelf extends Component {
             {books.map((thisBook) => (
             thisBook.shelf === thisShelf.id &&
             <li key={thisBook.id} className="book-list">
-              <div className="book">
-                <div className="book-title">{thisBook.title}</div>
-                <div className="book-authors">{BookHelper.handleAuthors(thisBook)}</div>
-                <div
-                  onClick={(e) => this.addRemoveSelectedBook(thisBook)}
-                  className={(this.state.selectedBooks.includes(thisBook)? 'book-selected' : 'book-cover')}
-                  draggable="true"
-                  onDragStart={(event) => this.drag(event, thisBook)}
-                  onDragEnd={(event) => this.dragEnd(event)}
-                  style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(thisBook)})`}}></div>
-                  <Link to={{
-                    pathname: `/details/:${thisBook.id}`,
-                    state: { currentBookId: thisBook.id , linkFrom: "bookShelf"}
-                  }} className="book-shelf-info"/>
-              </div>
+              <Book book={thisBook}
+                    selectedBook={selectedBooks}
+                    addRemoveSelectedBookMethod={this.addRemoveSelectedBook.bind(this)}
+                    shelfOrSearch={"bookShelf"}/>
             </li>
             ))}
             </div>
