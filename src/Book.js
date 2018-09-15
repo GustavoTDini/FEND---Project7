@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import BookShelf from './BookShelf'
+import ShelfSelect from './ShelfSelect'
 import * as BookHelper from './BookHelper'
 
 
@@ -27,7 +28,6 @@ class Book extends Component {
           shelfOrSearch={shelfOrSearch}/>
       </div>
     )
-
   }
 }
 
@@ -41,8 +41,7 @@ class BookCoverFooter extends Component {
 
   render() {
     const {shelfOrSearch, book, selectedBook, addRemoveSelectedBookMethod} = this.props
-    console.log(book)
-    console.log(shelfOrSearch)
+
     if (shelfOrSearch === "bookShelf"){
       return(
         <div>
@@ -67,13 +66,7 @@ class BookCoverFooter extends Component {
           }}><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div></Link>
           <Link to="/" onClick={() => this.addBook(book)}>
             <div className="book-search-add" ></div></Link>
-            <select
-              className="search-book">
-              <option value="Currently Reading">Currently Reading</option>
-              <option value="Currently Reading">Currently Reading</option>
-              <option value="Read">Read</option>
-              <option value="Want to Read">Want to Read</option>
-            </select>
+            <ShelfSelect startShelf={book.shelf}/>
         </div>
       )
     }

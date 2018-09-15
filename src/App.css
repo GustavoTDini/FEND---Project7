@@ -503,7 +503,7 @@ body, .app {
 .book-search-add {
   position: absolute;
   right: 0;
-  bottom: -10px;
+  bottom: 20px;
   width: 40px;
   height: 40px;
   border-radius: 50%;

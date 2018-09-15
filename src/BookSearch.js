@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import * as BookHelper from './BookHelper'
 import Book from './Book'
 
 class BookSearch extends Component {
@@ -58,7 +57,8 @@ class BookSearch extends Component {
           <ol className="books-search-grid">
           {showingBooks.map((book) =>
             <li key={book.id} className="book-list-search">
-              <Book book={book}/>
+              <Book book={book}
+                  shelfOrSearch={"bookSearch"}/>
             </li>
           )}
           </ol>

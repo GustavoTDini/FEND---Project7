@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import sortBy from 'sort-by'
-import * as BookHelper from './BookHelper'
 import Book from './Book'
 
 class BookShelf extends Component {
@@ -34,7 +33,6 @@ class BookShelf extends Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((fetchBooks) => {
-      console.log(fetchBooks)
       this.setState(state => ({
         books: fetchBooks
       }))
