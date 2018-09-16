@@ -1,4 +1,5 @@
-import bookCover from './images/placeholder-book-cover.png';
+import bookCover from './images/placeholder-book-cover.png'
+import * as BooksAPI from './BooksAPI'
 
 
 export function handleThumbnailError(book){
@@ -15,4 +16,16 @@ export function handleAuthors(book){
     authors = book.authors.join(' / ')
   }
   return authors
+}
+
+export function setShelf(bookId){
+  let shelf = "None"
+  BooksAPI.get(bookId).then((testBook) => {
+    if(testBook.hasOwnProperty('shelf')){
+      shelf = testBook.shelf
+    }
+    console.log(shelf)
+    return shelf
+  })
+
 }

@@ -5,8 +5,6 @@ import * as BooksAPI from './BooksAPI'
 import * as BookHelper from './BookHelper'
 import PropTypes from 'prop-types'
 
-import Book from './Book'
-
 class BookDetails extends Component {
   static propTypes = {
     currentBookId: PropTypes.string.isRequired,
@@ -54,7 +52,7 @@ class BookDetails extends Component {
               <p className="book-data-name">Pages</p>
               <p className="book-data">{currentBook.pageCount}</p>
               <p className="book-data-name">Shelf</p>
-              <ShelfSelect startShelf={currentBook.shelf}/>
+              <ShelfSelect selectedShelf={selectedShelf}/>
             </div>
           </div>
         </div>

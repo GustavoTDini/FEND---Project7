@@ -5,7 +5,6 @@ import sortBy from 'sort-by'
 import Book from './Book'
 
 class BookShelf extends Component {
-
   state = {
     shelves:[
       {
