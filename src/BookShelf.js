@@ -4,32 +4,44 @@ import * as BooksAPI from './BooksAPI'
 import sortBy from 'sort-by'
 import Book from './Book'
 
+/**
+ * Componente que carrega todos os livros que estão nas estantes salvos na API
+ * tem a funcionalidade de trocar de estante por drag and drop (DnD), 1 ou varios livros
+ * de cada vez, ou mover selecionando os livros e clicando no nome da estante.
+ */
 class BookShelf extends Component {
   state = {
+    /** Array com as estantes e infromações da mesma id, index e highLightShelf para o DnD */
     shelves:[
-      {
-        "index": 0,
-        "id": "currentlyReading",
-        "name": "Currently Reading",
-        "highLightShelf": false
-      },
-      {
-        "index": 1,
-        "id": "read",
-        "name": "Read",
-        "highLightShelf": false
-      },
-      {
-        "index": 2,
-        "id": "wantToRead",
-        "name": "Want to Read",
-        "highLightShelf": false
-      }
+     {
+       "index": 0,
+       "id": "currentlyReading",
+       "name": "Currently Reading",
+       "highLightShelf": false
+     },
+     {
+       "index": 1,
+       "id": "read",
+       "name": "Read",
+       "highLightShelf": false
+     },
+     {
+       "index": 2,
+       "id": "wantToRead",
+       "name": "Want to Read",
+       "highLightShelf": false
+     }
     ],
+    /** Array com os livros selecionados para mudança */
     selectedBooks:[],
+    /** Array com os livros salvos na API */
     books:[]
   }
 
+  /**
+   * No componentDidMount carregamos a API com os livros já cadastrados,
+   * com a função getAll
+   */
   componentDidMount() {
     BooksAPI.getAll().then((fetchBooks) => {
       this.setState(state => ({
@@ -38,21 +50,27 @@ class BookShelf extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-   return this.state !== nextState;
-  }
-
-  addRemoveSelectedBook(ev, book, selectedBook) {
-    (ev).preventDefault()
-    if (selectedBook.includes(book)){
-      this.setState({selectedBooks: selectedBook.filter((c) => c.id !== book.id)})
+  /**
+   * Função para adicionarmos o livro a array de livros selecionados, que poderemos mover
+   *
+   *  @param book - livro a ser adicionado
+   */
+  addRemoveSelectedBook(book) {
+    const { selectedBooks } = this.state
+    if (selectedBooks.includes(book)){
+      this.setState({selectedBooks: selectedBooks.filter((c) => c.id !== book.id)})
     } else{
       this.setState(state => ({
-        selectedBooks: selectedBook.concat(book)
+        selectedBooks: selectedBooks.concat(book)
       }))
     }
   }
 
+  /**
+   * Função para atualizarmos os livros de selectedBooks para uma nova estante
+   *
+   *  @param newShelf - estante para aonde serão movidos os livros
+   */
   updateShelf(newShelf){
     const { books, selectedBooks } = this.state
 
@@ -67,6 +85,9 @@ class BookShelf extends Component {
     this.clearShelves()
   }
 
+  /**
+   * Função para apagarmos todas as estantes ao final do movimento de DnD
+   */
   clearShelves(){
     let newShelves = this.state.shelves;
     for (let i = 0; i < newShelves.length; i ++){
@@ -77,6 +98,23 @@ class BookShelf extends Component {
     }))
   }
 
+  /**
+   * Função para movermos os livros de selectedBooks para uma nova estante,
+   * usado no mover com o clique na placa de nome da estante
+   *
+   *  @param newShelf - estante para aonde serão movidos os livros
+   */
+  moveBooks(ev, newShelf) {
+    if (this.state.selectedBooks.length !== 0){
+      this.updateShelf(newShelf)
+    }
+  }
+
+  /**
+   * Função para fazermos o DnD dos livros
+   *
+   *  @param book - livro que estamos movendo, testamos se o mesmo já esta em selectedBooks
+   */
   drag(ev, book) {
     ev.target.style.cursor = 'grabbing'
     ev.dataTransfer.effectAllowed = "move"
@@ -85,20 +123,29 @@ class BookShelf extends Component {
     }
   }
 
-  moveBooks(ev, newShelf) {
-    if (this.state.selectedBooks.length !== 0){
-      this.updateShelf(newShelf)
-    }
-  }
-
+  /**
+   * Função para voltarmos o cursor ao normal ao terminarmos o movimento de DnD
+   *
+   */
   dragEnd(ev) {
     ev.target.style.cursor = 'pointer'
   }
 
+  /**
+   * Função que identifica o final do DnD e executa o updateShelf
+   *
+   * @param newShelf - estante para aonde serão movidos os livros
+   */
   drop(ev, newShelf) {
     this.updateShelf(newShelf)
   }
 
+  /**
+   * Função que identifica que estamos em uma estante para colocarmos os livros no
+   * DnD e acende a mesma para melhor visualizaçào de onde iremos colocar o livro
+   *
+   * @param index - o indice da estante a ser acesa
+   */
   allowDrop(ev, index) {
       ev.preventDefault()
         let newShelves = this.state.shelves
@@ -108,6 +155,12 @@ class BookShelf extends Component {
         }))
   }
 
+  /**
+   * Função que identifica que estamos saindo de uma estante para colocarmos os livros no
+   * DnD e apaga a mesma para identificarmos que não poderemos mover
+   *
+   * @param index - o indice da estante a ser apagada
+   */
   leaveDrop(ev, index){
     ev.preventDefault()
     let newShelves = this.state.shelves
@@ -118,8 +171,9 @@ class BookShelf extends Component {
   }
 
   render(){
-    const { books, shelves , selectedBooks} = this.state
+    const { shelves, books, selectedBooks} = this.state
 
+    // Colocamos os livros em ordem alfabetica
     books.sort(sortBy('title'))
 
     return(
@@ -142,7 +196,9 @@ class BookShelf extends Component {
               <Book book={thisBook}
                     selectedBook={selectedBooks}
                     addRemoveSelectedBookMethod={this.addRemoveSelectedBook.bind(this)}
-                    shelfOrSearch={"bookShelf"}/>
+                    shelfOrSearch={"bookShelf"}
+                    drag={this.drag.bind(this)}
+                    dragEnd={this.dragEnd.bind(this)}/>
             </li>
             ))}
             </div>

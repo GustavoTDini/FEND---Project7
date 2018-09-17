@@ -5,12 +5,15 @@ import BookSearch from './BookSearch'
 import BookDetails from './BookDetails'
 import './App.css'
 
+/**
+ * Componente raiz do App
+ */
 class BooksApp extends Component {
 
   render() {
     return (
       <div className="app">
-          <div className="list-books">
+          <div>
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>

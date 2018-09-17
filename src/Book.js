@@ -1,77 +1,47 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import BookShelf from './BookShelf'
 import * as BookHelper from './BookHelper'
-import ShelfSelect from './ShelfSelect'
+import BookCoverFooter from './BookCoverFooter'
 
-
+/**
+ * Componente que carrega os livros em uma lista, será utilizado tanto em BookShelf,
+ * como em BookSearch, as mudanças em funcionalidades serão reslizadas por BookCoverFooter
+ */
 class Book extends Component {
   static propTypes = {
+    /** Json do Livro a ser mostrado */
     book: PropTypes.object.isRequired,
+    /** Estante em que o atual livro está */
+    bookShelf: PropTypes.array,
+    /** Array com os livros selecionados para mudança */
     selectedBook: PropTypes.array,
+    /** função addRemoveSelectedBookMethod do BookShelf */
     addRemoveSelectedBookMethod: PropTypes.func,
-    shelfOrSearch: PropTypes.string.isRequired,
+    /** função dragEnd do BookShelf */
+    dragEnd: PropTypes.func,
+    /** função drag do BookShelf */
+    drag: PropTypes.func,
+    /** String que identifica de onde veio, se das estantes ou da busca */
+    shelfOrSearch: PropTypes.string.isRequired
   }
 
   render() {
-    const {book, selectedBook, addRemoveSelectedBookMethod,shelfOrSearch} = this.props
+    const {book, selectedBook, addRemoveSelectedBookMethod,shelfOrSearch, drag, dragEnd, bookShelf} = this.props
 
     return(
       <div className="book">
         <div className="book-title">{book.title}</div>
         <div className="book-authors">{BookHelper.handleAuthors(book)}</div>
         <BookCoverFooter
+          bookshelf={bookShelf}
           book={book}
           selectedBook={selectedBook}
           addRemoveSelectedBookMethod={addRemoveSelectedBookMethod}
-          shelfOrSearch={shelfOrSearch}/>
+          shelfOrSearch={shelfOrSearch}
+          drag={drag}
+          dragEnd={dragEnd}/>
       </div>
     )
-
-  }
-}
-
-class BookCoverFooter extends Component {
-  static propTypes = {
-    shelfOrSearch: PropTypes.string.isRequired,
-    book:PropTypes.object.isRequired,
-    selectedBook: PropTypes.array,
-    addRemoveSelectedBookMethod: PropTypes.func
-  }
-
-  render() {
-    const {shelfOrSearch, book, selectedBook, addRemoveSelectedBookMethod} = this.props
-    if (shelfOrSearch === "bookShelf"){
-      return(
-        <div>
-          <div onClick={(e) => addRemoveSelectedBookMethod(e, book, selectedBook)}
-          className={(selectedBook.includes(book)? 'book-selected' : 'book-cover')}
-          draggable="true"
-          onDragStart={(event) => BookShelf.drag(event, book)}
-          onDragEnd={(event) => BookShelf.dragEnd(event)}
-          style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div>
-          <Link to={{
-            pathname: `/details/:${book.id}`,
-            state: { currentBookId: book.id , linkFrom: shelfOrSearch}
-          }} className="book-shelf-info"/>
-        </div>
-      )
-    } else if (shelfOrSearch === "bookSearch") {
-      return(
-        <div>
-          <Link to={{
-            pathname: `/details/:${book.id}`,
-            state: { currentBookId: book.id , linkFrom: shelfOrSearch}
-          }}><div className='book-cover' style={{ width: 128, height: 193, backgroundImage: `url(${BookHelper.handleThumbnailError(book)})`}}></div></Link>
-          <Link to="/" onClick={() => this.addBook(book)}>
-            <div className="book-search-add" ></div>
-          </Link>
-          <ShelfSelect startShelf ={BookHelper.setShelf(book.id)}/>
-
-        </div>
-      )
-    }
   }
 }
 

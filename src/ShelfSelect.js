@@ -1,25 +1,24 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 class ShelfSelect extends Component {
-  static propTypes = {
-    startShelf:PropTypes.string.isRequired
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.searchOrDetails = undefined
+    this.selectedShelf = undefined
   }
 
-  state = {
-    selectedShelf:null
-  }
-
-  changeShelf = (event) => {
-    this.setState({selectedShelf: event.target.value})
+  handleChange(e) {
+    this.props.onChangeShelf(e.target.value);
   }
 
   render() {
-    const {selectedShelf} = this.state
+    const {selectedShelf, searchOrDetails} = this.props
 
     return(
       <select
-        onChange={(event) => this.changeShelf(event)}
+        className={(searchOrDetails === "details"? "select-shelves-details" : "select-shelves")}
+        onChange={this.handleChange}
         value={selectedShelf}>
         <option value="none">None</option>
         <option value="currentlyReading">Currently Reading</option>

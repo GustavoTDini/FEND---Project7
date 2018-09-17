@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Cinzel');
 
-/* *{
-    border: 1px solid red !important
-} */
+/* App Classes */
 
 html, body, .root {
   height: 100%;
@@ -13,7 +11,42 @@ body, .app {
   background-image: url("./images/grunge-wall.png");
 }
 
-/* shelf page */
+.list-books-title {
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  margin-top: 0px;
+  padding: 10px 0;
+  background: #2e7c31;
+  text-align: center;
+}
+
+.list-books-title h1 {
+  font-weight: 400;
+  margin: 0;
+  color: white;
+}
+
+.title-margin{
+    height: 58px;
+}
+
+/* BookShelf Classes */
+
+.shelves{
+  display: block;
+  -webkit-padding-end: 0px;
+  -webkit-padding-start: 0px;
+}
+
+.bookshelf-title-encapsule{
+  display: flex;
+}
+
+.bookshelf-title-encapsule-move{
+  display: flex;
+  cursor: copy;
+}
 
 .bookshelf-title {
   text-transform: uppercase;
@@ -33,27 +66,6 @@ body, .app {
   background: linear-gradient(45deg, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 13%, rgba(251,223,147,1) 27%, rgba(248,181,0,1) 59%, rgba(251,223,147,1) 81%, rgba(248,181,0,1) 100%);
 }
 
-.bookshelf-title-encapsule{
-  display: flex;
-}
-
-.bookshelf-title-encapsule-move{
-  display: flex;
-  cursor: copy;
-}
-
-.bookshelf-books {
-  text-align: center;
-}
-
-/* shelf */
-
-.shelves{
-  display: block;
-  -webkit-padding-end: 0px;
-  -webkit-padding-start: 0px;
-}
-
 .bookshelf-encapsule{
   overflow-y: auto;
   padding: 10px;
@@ -63,7 +75,6 @@ body, .app {
   margin-right: 0px;
   margin-left: 0px;
 }
-
 
 .bookshelf-encapsule-drag {
   overflow-y: auto;
@@ -76,8 +87,6 @@ body, .app {
   background: radial-gradient(ellipse at center, rgba(255,255,255,0.5) 10%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.39) 50%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0) 70%);
 }
 
-
-
 .bookshelf-grid{
   margin-right: 50px;
   margin-left: 50px;
@@ -86,6 +95,16 @@ body, .app {
   align-items: flex-end;
   display: flex;
   justify-content: space-evenly;
+}
+
+.book-list {
+  margin-left: 15px;
+  margin-right: 15px;
+  display: flex;
+  position: relative;
+  bottom: -25px;
+  z-index: 1;
+  height: 100%;
 }
 
 .shelf{
@@ -113,56 +132,7 @@ body, .app {
   background-color: #3E2723;
   background-image: url("./images/retina-wood.png");
   background-blend-mode: hard-light;
-  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
   box-shadow: 0px 8px 20px 4px rgba(0,0,0,0.9);
-}
-
-.list-books-title {
-  z-index: 10;
-  position: fixed;
-  width: 100%;
-  margin-top: 0px;
-  padding: 10px 0;
-  background: #2e7c31;
-  text-align: center;
-}
-
-.title-margin{
-    height: 58px;
-}
-
-.list-books-title h1 {
-  font-weight: 400;
-  margin: 0;
-  color: white;
-}
-
-.list-books-content {
-  padding: 0 0 80px;
-  flex: 1;
-}
-
-.bookshelf {
-  padding: 0 10px 20px;
-}
-
-.bookshelf-on-drag {
-  background: black;
-}
-
-@media (min-width: 600px) {
-  .bookshelf {
-    padding: 0 20px 40px;
-  }
-}
-
-.bookshelf-books {
-  text-align: center;
-}
-
-.bookshelf-on-drag {
-  text-align: center;
-  background: black;
 }
 
 .open-search {
@@ -185,7 +155,7 @@ body, .app {
   font-size: 0;
 }
 
-/* search page */
+/* BookSearch Classes */
 
 .search-books-bar {
   position: fixed;
@@ -196,10 +166,26 @@ body, .app {
   display: flex;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
 }
+
+.close-search {
+  display: block;
+  top: 20px;
+  left: 15px;
+  width: 50px;
+  height: 53px;
+  background: white;
+  background-image: url('./icons/arrow-back.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 28px;
+  font-size: 0;
+}
+
 .search-books-input-wrapper {
   flex: 1;
   background: #e9e;
 }
+
 .search-books-bar input {
   width: 100%;
   padding: 15px 10px;
@@ -226,142 +212,11 @@ body, .app {
   position: relative;
 }
 
-.search-book-select{
-  width: 100px;
-  padding-right: 30px;
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-}
-
-.close-search {
-  display: block;
-  top: 20px;
-  left: 15px;
-  width: 50px;
-  height: 53px;
-  background: white;
-  background-image: url('./icons/arrow-back.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 28px;
-  font-size: 0;
-}
-
-.search-books-results {
-  padding: 80px 10px 20px;
-}
-
-/* books grid */
-
-.books-grid {
-  overflow: auto;
-  height: 313px;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.book-list {
-  margin-left: 15px;
-  margin-right: 15px;
-  display: flex;
-  position: relative;
-  bottom: -25px;
-  z-index: 1;
-  height: 100%;
-}
-
-.book {
-  width: 140px;
-  display: inline-block;
-  align-self: flex-end;
-}
-
-.book-title {
-  font-weight: bolder;
-  font-size: 15px;
-  font-family: 'Cinzel', serif;
-  text-align: center;
-  margin-top: 10px;
-}
-.book-authors {
-  text-align: center;
-  font-family: 'Cinzel', serif;
-  margin-bottom: 12px;
-  font-size: 12px;
-}
-
-/* book cover */
-
-.book-cover {
-  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
-  background: #eee;
-  background-repeat: space;
-  background-size: cover;
-  cursor: pointer;
-}
-
-.book-selected {
-  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
-  background: #eee;
-  background-repeat: space;
-  background-size: cover;
-  cursor: pointer;
-  background-blend-mode:hard-light;
-}
-
-.book-cover-title {
-  padding: 20px 10px 0;
-  text-align: center;
-  font-size: 0.8em;
-}
-
-/* book details */
+/* BookDetails Classes */
 
 .book-details{
   margin: 20px;
 }
-
-.book-details-info{
-  margin-left: 20px;
-  margin-right: 20px;
-  padding: 20px;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.book-data-name{
-  margin-bottom: 5px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.book-data{
-  width: 100%;
-  margin-top: 5px;
-  font-size: 16px;
-}
-
-.book-info{
-  min-width: 300px;
-  border: 2px solid #9E9E9E;
-  border-radius: 5px 5px 5px 5px;
-  box-shadow: 5px 5px 12px -4px rgba(0,0,0,0.81);
-  padding: 10px;
-}
-
-.info{
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-}
-
-.info-pages{
-  display: flex;
-  justify-content: space-around;
-}
-
 
 .book-details-title {
   font-weight: bolder;
@@ -378,55 +233,13 @@ body, .app {
   margin-bottom: 12px;
 }
 
-.details-buttons{
-  margin-top: 15px;
+.book-details-info{
+  margin-left: 20px;
+  margin-right: 20px;
+  padding: 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
-
-.details-add-button{
-  display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #2e7d32;
-  background-image: url('./icons/add.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 28px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  font-size: 0;
-}
-
-.details-delete-button{
-  display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #e60000;
-  background-image: url('./icons/add.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 28px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  font-size: 0;
-}
-
-.details-update-button{
-  display: block;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #2e7d32;
-  background-image: url('./icons/add.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 28px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  font-size: 0;
-}
-
-/* book cover */
 
 .book-details-cover {
   margin-right: 30px;
@@ -434,7 +247,34 @@ body, .app {
   box-shadow: 5px 5px 12px -4px rgba(0,0,0,0.81);
 }
 
-.details-return a {
+.book-info{
+  min-width: 300px;
+  border: 2px solid #9E9E9E;
+  border-radius: 5px 5px 5px 5px;
+  box-shadow: 5px 5px 12px -4px rgba(0,0,0,0.81);
+  padding: 10px;
+}
+
+.info{
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+}
+
+.book-data-name{
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.book-data{
+  width: 100%;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+/* BookDetailsFooter Classes */
+
+.details-return {
   display: block;
   width: 50px;
   height: 50px;
@@ -485,6 +325,47 @@ body, .app {
   bottom: 25px;
 }
 
+/* Book Classes */
+
+.book {
+  width: 140px;
+  display: inline-block;
+  align-self: flex-end;
+}
+
+.book-title {
+  font-weight: bolder;
+  font-size: 15px;
+  font-family: 'Cinzel', serif;
+  text-align: center;
+  margin-top: 10px;
+}
+.book-authors {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+/* BookCoverFooter Classes - bookshelf */
+
+.book-cover {
+  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
+  background: #eee;
+  background-repeat: space;
+  background-size: cover;
+  cursor: pointer;
+}
+
+.book-selected {
+  box-shadow: 6px -4px 11px 5px rgba(0,0,0,0.9);
+  background: #eee;
+  background-repeat: space;
+  background-size: cover;
+  cursor: pointer;
+  background-blend-mode:hard-light;
+}
+
 .book-shelf-info {
   position: absolute;
   right: 0;
@@ -500,10 +381,12 @@ body, .app {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
+/* BookCoverFooter Classes - booksearch */
+
 .book-search-add {
   position: absolute;
   right: 0;
-  bottom: 20px;
+  bottom: 25px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -514,4 +397,24 @@ body, .app {
   background-size: 20px;
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+/* ShelfSelect Classes */
+
+.select-shelves-details{
+  font-size: 14px;
+  margin-top: 5px;
+  font-family: 'Cinzel', serif;
+  color: white;
+  width: 100%;
+  background-color: #60ac5d;
+}
+
+.select-shelves{
+  font-size: 10px;
+  margin-top: 5px;
+  font-family: 'Cinzel', serif;
+  color: white;
+  width: 100%;
+  background-color: #60ac5d;
 }
