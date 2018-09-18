@@ -1,5 +1,6 @@
 # MyReads Project
 
+
 ### Shelf
 Para este projeto fiz a funcionalidade de Drag and Drop para mover os livros de uma estante para a outra, podemos mover também vários livros de uma vez, basta seleciona-los, eles ficaram mais claros mostrando que estão selecionados, então poderemos mover com o drag ou clicando no nome da estante. Clicando no "i" no canto inferior direito do Livro, mostrará a tela com informações.
 
@@ -68,6 +69,30 @@ Para o Funcionamento deste projeto foi utilizado:
 ### Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find more information on how to perform common tasks [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
+
+### Instalation & Production Instructions
+
+#### Environment setup & Libraries
+
+O projeto utiliza as seguintes bibliotecas e pacotes
+
+```sh
+  $ npm install --save prop-types sort-by react-router-dom
+```
+
+#### Development
+
+Iniciar o Servidor Webpack:
+
+```sh
+  $ npm start
+```
+
+#### Production Build
+
+```sh
+  $ npm run build
+```
 
 ### Transparent Textures
 

@@ -16,23 +16,17 @@ class BookSearch extends Component {
   }
 
   /**
-   * No componentDidUpdate, testamos se houve mudança no query, caso positivo, fazemos uma nova busca na BooksAPI
-   */
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.query !== prevState.query){
-      BooksAPI.search(this.state.query).then(data => {
-        this.setState({searchedBooks: data})
-      })
-    }
-  }
-
-  /**
-   * Função para atualizarmos o query, atualiza com o novo valor
+   * Função para atualizarmos o query, atualiza com o novo valor e a cada mudança,
+   * faremos uma busca no BooksAPI
    *
    *  @param query - valor recebido pela mudança no query input
    */
   updateQuery = (query) => {
+    BooksAPI.search(this.state.query).then(data => {
+      this.setState({searchedBooks: data})
+    })
     this.setState({ query: query })
+    console.log("update");
   }
 
   render() {
@@ -40,7 +34,7 @@ class BookSearch extends Component {
     let showingBooks
 
     // Testamos se o searchedBooks é indefinido, ou se não é uma array o que daria erros no render
-    if (typeof searchedBooks !== 'undefined' && searchedBooks.constructor === Array ) {
+    if ((searchedBooks) && searchedBooks.constructor === Array ) {
       showingBooks = searchedBooks
     } else {
       showingBooks = []
